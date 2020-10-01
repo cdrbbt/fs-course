@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const App = (props) => {
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(Math.floor(Math.random() * props.anecdotes.length))
   const [points, setPoints] = useState(new Array(props.anecdotes.length).fill(0))
 
   const nextAnecdote = () => {
@@ -11,19 +11,35 @@ const App = (props) => {
 
   const vote = () => {
     const newPoints = [...points]
-    newPoints[selected] +=1
+    newPoints[selected] += 1
     setPoints(newPoints)
   }
 
+  const topPoints = Math.max(...points)
+  const topAnecdote = points.indexOf(topPoints)
+
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <p>has {points[selected]} votes</p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote
+      text={props.anecdotes[selected]}
+      points={points[selected]}/>
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next</button>
+      <h1>Anecdote with the most votes</h1>
+      <Anecdote
+      text={props.anecdotes[topAnecdote]}
+      points={points[topAnecdote]}/>
     </div>
   )
 }
+
+const Anecdote = ({ text, points }) => (
+  <div>
+    <p>{text}</p>
+    <p>has {points} votes</p>
+  </div>
+)
 
 const anecdotes = [
   'If it hurts, do it more often',
