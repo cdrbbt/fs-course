@@ -35,6 +35,9 @@ const Button = (props) => (
 const Statistics = ({ good, neutral, bad }) => {
 
   const total = good + neutral + bad
+  
+  if (total===0) return <p>No feedback given</p>
+
   const avg = (good - bad) / total
   const pos = good / total * 100
 
