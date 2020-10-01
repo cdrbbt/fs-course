@@ -35,23 +35,32 @@ const Button = (props) => (
 const Statistics = ({ good, neutral, bad }) => {
 
   const total = good + neutral + bad
-  
-  if (total===0) return <p>No feedback given</p>
+
+  if (total === 0) return <p>No feedback given</p>
 
   const avg = (good - bad) / total
   const pos = good / total * 100
 
   return (
-    <div>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>Total {total}</p>
-      <p>Average {avg}</p>
-      <p>Posotive {pos}%</p>
-    </div>
+    <table>
+      <tbody>
+        <Statistic label='Good' value={good} />
+        <Statistic label='Neutral' value={neutral} />
+        <Statistic label='Bad' value={bad} />
+        <Statistic label='Total' value={total} />
+        <Statistic label='Average' value={avg} />
+        <Statistic label='Positive' value={pos} />
+      </tbody>
+    </table>
   )
 }
+
+const Statistic = ({ label, value }) => (
+  <tr>
+    <td>{label}</td>
+    <td>{value}</td>
+  </tr>
+)
 
 ReactDOM.render(
   <React.StrictMode>
