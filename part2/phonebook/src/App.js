@@ -1,30 +1,35 @@
 import React, { useState } from 'react'
 
+const defaultPerson = { name: '', pNumber: '' }
+
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', pNumber: '041-32165478' }
   ])
-  const [newName, setNewName] = useState('')
+  const [newPerson, setNewPerson] = useState(defaultPerson)
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is arealdy added to the phonebook`)
+    if (persons.find(person => person.name === newPerson.name)) {
+      alert(`${newPerson.name} is arealdy added to the phonebook`)
     } else {
-      const newPerson = { name: newName }
       setPersons(persons.concat(newPerson))
-      setNewName('')
+      setNewPerson(defaultPerson)
     }
   }
 
-  const nameChange = (event) => setNewName(event.target.value)
+  const nameChange = (event) => setNewPerson({...newPerson, name:event.target.value})
+  const numberChange = (event) => setNewPerson({...newPerson, pNumber:event.target.value})
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={nameChange} />
+          name: <input value={newPerson.name} onChange={nameChange} />
+        </div>
+        <div>
+          number: <input value={newPerson.pNumber} onChange={numberChange}/>
         </div>
         <div>
           <button type="submit">add</button>
@@ -32,7 +37,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => <li key={person.name}>{person.name}</li>)}
+        {persons.map(person => <li key={person.name}>{person.name} {person.pNumber}</li>)}
       </ul>
     </div>
 
