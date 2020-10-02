@@ -19,23 +19,21 @@ const Part = (props) => (
   <p>{props.part.name} {props.part.exercises}</p>
 )
 
-// const Total = (props) => {
-//   let exercises = 0
-//   props.course.parts.forEach(element => {
-//     exercises += element.exercises
-//   });
-//   return (
-//     <div>
-//       <p>Number of exercises {exercises}</p>
-//     </div>
-//   )
-// }
+const Total = ({course}) => {
+  let exercises = course.parts.reduce((acc, part) => acc += part.exercises, 0)
+  return (
+    <div>
+      <p>Number of exercises {exercises}</p>
+    </div>
+  )
+}
 
 const Course = ({ course }) => {
   return (
     <div>
       <Header course={course} />
       <Content course={course}/>
+      <Total course={course}/>
     </div>
   )
 }
