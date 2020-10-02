@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 
+import Filter from './components/Filter'
+import AddPerson from './components/AddPerson'
+import PersonList from './components/PersonList'
+
 const defaultPerson = { name: '', number: '' }
 
 const App = () => {
@@ -29,26 +33,20 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>
-        Filter: <input value={filter} onChange={filterChange}/>
-      </div>
-      <h2>Add a new person</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newPerson.name} onChange={nameChange} />
-        </div>
-        <div>
-          number: <input value={newPerson.number} onChange={numberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {fileteredList.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
-      </ul>
+      <h1>Phonebook</h1>
+      <Filter
+        filter={filter}
+        filterChange={filterChange}
+      />
+      <AddPerson
+        newPerson={newPerson}
+        addPerson={addPerson}
+        nameChange={nameChange}
+        numberChange={numberChange}
+      />
+      <PersonList
+      persons={fileteredList}
+      />
     </div>
 
   )
