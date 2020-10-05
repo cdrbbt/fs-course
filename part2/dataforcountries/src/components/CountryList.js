@@ -1,10 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
+import CountryInfo from './CountryInfo'
 
 const CountryList = ({ countries }) => {
+  const [selectedCountry, setSelectedCountry] = useState(null)
+
+  const selectCountry = (country) => () => setSelectedCountry(country)
+
   return (
-    <ul>
-      {countries.map(country => <li key={country.name}>{country.name}</li>)}
-    </ul>
+    <div>
+      <ul>
+        {countries.map(country => <li key={country.name}>{country.name} <button onClick={selectCountry(country)}>show</button></li>)}
+      </ul>
+      {selectedCountry ? <CountryInfo country={selectedCountry}/> : null}
+    </div>
   )
 }
 
