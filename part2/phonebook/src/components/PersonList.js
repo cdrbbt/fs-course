@@ -2,7 +2,6 @@ import React from 'react'
 import Person from './Person'
 
 const PersonList = ({persons}) => {
-  console.log(persons)
   return (
     <div>
       <h2>Persons</h2>
