@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+
+import phonebookService from './services/phonebookService'
 import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
 import PersonList from './components/PersonList'
@@ -12,12 +13,11 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log(response)
-      setPersons(response.data)
-    })
+    phonebookService.getPersons()
+      .then(persons => {
+        console.log(persons)
+        setPersons(persons)
+      })
   }, [])
 
   const addPerson = (event) => {
@@ -25,8 +25,13 @@ const App = () => {
     if (persons.find(person => person.name === newPerson.name)) {
       alert(`${newPerson.name} is arealdy added to the phonebook`)
     } else {
-      setPersons(persons.concat(newPerson))
-      setNewPerson(defaultPerson)
+      phonebookService.addPerson(newPerson)
+        .then(person => {
+          console.log(person)
+          setPersons(persons.concat(person))
+          setNewPerson(defaultPerson)
+        })
+
     }
   }
 
