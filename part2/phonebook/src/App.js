@@ -22,22 +22,29 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.find(person => person.name === newPerson.name)) {
-      alert(`${newPerson.name} is arealdy added to the phonebook`)
+    const person = persons.find(person => person.name === newPerson.name)
+    if (person) {
+      window.confirm(`Update ${newPerson.name}'s number?`) ?
+        phonebookService.changeNumber({...person, number:newPerson.number}).then(person => {
+          const newPersons = [...persons]
+          newPersons[newPersons.findIndex(p => p.id === person.id)] = person
+          setPersons(newPersons)
+          setNewPerson(defaultPerson)
+        }) :
+        console.log('cancel update')
     } else {
       phonebookService.addPerson(newPerson)
         .then(person => {
           setPersons(persons.concat(person))
           setNewPerson(defaultPerson)
         })
-
     }
   }
 
   const deletePerson = (person) => () => {
-    window.confirm(`Delete ${person.name}?`) ? 
-    phonebookService.removePerson(person.id).then(() => setPersons(persons.filter(p => p.id !== person.id))) :
-    console.log('cancel')
+    window.confirm(`Delete ${person.name}?`) ?
+      phonebookService.removePerson(person).then(() => setPersons(persons.filter(p => p.id !== person.id))) :
+      console.log('cancel')
   }
 
   const nameChange = (event) => setNewPerson({ ...newPerson, name: event.target.value })
