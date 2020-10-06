@@ -27,12 +27,17 @@ const App = () => {
     } else {
       phonebookService.addPerson(newPerson)
         .then(person => {
-          console.log(person)
           setPersons(persons.concat(person))
           setNewPerson(defaultPerson)
         })
 
     }
+  }
+
+  const deletePerson = (person) => () => {
+    window.confirm(`Delete ${person.name}?`) ? 
+    phonebookService.removePerson(person.id).then(() => setPersons(persons.filter(p => p.id !== person.id))) :
+    console.log('cancel')
   }
 
   const nameChange = (event) => setNewPerson({ ...newPerson, name: event.target.value })
@@ -55,6 +60,7 @@ const App = () => {
       />
       <PersonList
         persons={fileteredList}
+        deletePerson={deletePerson}
       />
     </div>
 
