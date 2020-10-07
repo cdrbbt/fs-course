@@ -39,6 +39,7 @@ const App = () => {
           console.log(error)
           setNotification({message: `${person.name} information has been already deleted from server`, error:true})
           setTimeout(() => setNotification(defaultNotification), 5000)
+          setPersons(persons.filter(p => p.id !== person.id))
         }) :
         console.log('cancel update')
     } else {
