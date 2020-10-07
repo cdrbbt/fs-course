@@ -4,13 +4,16 @@ import phonebookService from './services/phonebookService'
 import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
 import PersonList from './components/PersonList'
+import Notification from './components/Notification'
 
 const defaultPerson = { name: '', number: '' }
+const defaultNotification = {message:null, error:false}
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState(defaultPerson)
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState(defaultNotification)
 
   useEffect(() => {
     phonebookService.getPersons()
@@ -30,6 +33,12 @@ const App = () => {
           newPersons[newPersons.findIndex(p => p.id === person.id)] = person
           setPersons(newPersons)
           setNewPerson(defaultPerson)
+          setNotification({message: `Updated ${person.name}'s number`, error:false})
+          setTimeout(() => setNotification(defaultNotification), 5000)
+        }).catch(error => {
+          console.log(error)
+          setNotification({message: `${person.name} information has been already deleted from server`, error:true})
+          setTimeout(() => setNotification(defaultNotification), 5000)
         }) :
         console.log('cancel update')
     } else {
@@ -37,14 +46,19 @@ const App = () => {
         .then(person => {
           setPersons(persons.concat(person))
           setNewPerson(defaultPerson)
+          setNotification({message: `Added ${person.name}`, error:false})
+          setTimeout(() => setNotification(defaultNotification), 5000)
         })
     }
   }
 
   const deletePerson = (person) => () => {
-    window.confirm(`Delete ${person.name}?`) ?
-      phonebookService.removePerson(person).then(() => setPersons(persons.filter(p => p.id !== person.id))) :
-      console.log('cancel')
+    const confirmation = window.confirm(`Delete ${person.name}?`)
+    if (confirmation) {
+      phonebookService.removePerson(person).then(() => setPersons(persons.filter(p => p.id !== person.id)))
+      setNotification({message: `Removed ${person.name}`, error:false})
+          setTimeout(() => setNotification(defaultNotification), 5000)
+    }
   }
 
   const nameChange = (event) => setNewPerson({ ...newPerson, name: event.target.value })
@@ -55,6 +69,8 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification 
+      notification={notification}/>
       <Filter
         filter={filter}
         filterChange={filterChange}
