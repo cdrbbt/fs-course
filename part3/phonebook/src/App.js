@@ -49,6 +49,10 @@ const App = () => {
           setNewPerson(defaultPerson)
           setNotification({message: `Added ${person.name}`, error:false})
           setTimeout(() => setNotification(defaultNotification), 5000)
+        }).catch (error => {
+          console.log(error.response.data)
+          setNotification({message: error.response.data.error, error:true})
+          setTimeout(() => setNotification(defaultNotification), 5000)
         })
     }
   }
